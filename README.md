@@ -1,7 +1,6 @@
 # Replication Package
 >#### Women, World Society, and the Expansion of Academic Knowledge in Education.
 
----
 This is a working project directory and will be made into a stable reproduction package, _eventually_. 
 
 ---
