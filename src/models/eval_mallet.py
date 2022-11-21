@@ -6,6 +6,8 @@ from gensim.models.coherencemodel import CoherenceModel
 from gensim.corpora import Dictionary
 from gensim import corpora
 from tqdm import tqdm
+import csv
+import pickle 
 
 parser = argparse.ArgumentParser(description="Computes coherence metrics to evaluate mallet model.")
 parser.add_argument(
@@ -39,39 +41,37 @@ def get_corpus(input_dir):
     
     
 def get_files(model_dir):
-    # model_files = glob.glob(model_dir+"mallet*model")
     model_files = glob.glob(model_dir+"*pkl")
     return model_files
 
 
 def get_coherence(model_files, dictionary, corpus, df, model_dir):
     metrics = ['u_mass', 'c_v', 'c_npmi', 'c_uci']
-    coherences = []
-    for model_file in tqdm(model_files): 
-        # model = LdaMallet.load(model_file)
-        model = pickle.load(open(model_file, 'rb'))
-        k = int(model_file.split('mallet')[1].replace("model",""))
-        for metric in metrics:
-            if 'c_' in metric: 
-                cm = CoherenceModel(model=model, 
-                                    texts=df['tokens'],
-                                    dictionary=dictionary, 
-                                    coherence=metric, 
-                                    )
+    with open(model_dir+"coherence_mallet.csv", 'w') as f: 
+        writer = csv.writer(f)
+        writer.writerow(['k', 'metric', 'coherence'])
+        for model_file in tqdm(model_files): 
+            model = pickle.load(open(model_file, 'rb'))
+            k = int(model_file.split('mallet')[1].replace("model.pkl",""))
+            for metric in metrics:
+                if 'c_' in metric: 
+                    cm = CoherenceModel(model=model, 
+                                        texts=df['tokens'],
+                                        dictionary=dictionary, 
+                                        coherence=metric, 
+                                        )
 
-            else:
-                cm = CoherenceModel(model=model, 
-                                    corpus=corpus, 
-                                    dictionary=dictionary, 
-                                    coherence=metric)
+                else:
+                    cm = CoherenceModel(model=model, 
+                                        corpus=corpus, 
+                                        dictionary=dictionary, 
+                                        coherence=metric)
+
+                coherence_value = cm.get_coherence()
+                row = [k, metric, coherence_value]
+                writer.writerow(row)
+
                 
-            coherence_value = cm.get_coherence()
-            coherences.append({'k': k, 
-                               'metric': metric, 
-                               'coherence': coherence_value})
-    coherences_df = pd.DataFrame.from_dict(coherences)
-    coherences_df.to_csv(model_dir+'coherences_mallet.csv', index=False)
-
 def main():
     args = parser.parse_args()
     
