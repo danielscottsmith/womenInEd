@@ -30,7 +30,7 @@ def get_df(input_dir):
 
 def preprocess_text(df, output_dir):
     df['tokens'] = df['text'].apply(lambda x: preprocess_string(" ".join(x)))
-    df.to_feather(output_dir+"pro_articles_df.csv")
+    df.to_feather(output_dir+"pro_articles_df.feather")
     return df
 
 
@@ -41,8 +41,7 @@ def get_bigrams(df, output_dir):
         for tkn in bigrams[df['tokens'].iloc[idx]]:
             if "_" in tkn:
                 df['tokens'].iloc[idx].append(tkn)
-                print(tkn)
-    df.to_feather(output_dir+"pro_articles_df.csv")
+    df.to_feather(output_dir+"pro_articles_df.feather")
     return df
     
 

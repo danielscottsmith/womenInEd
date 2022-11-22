@@ -41,7 +41,7 @@ parser.add_argument(
 
 
 def get_df(input_dir):
-    return pd.read_csv(input_dir+"pro_articles_df.csv")
+    return pd.read_feather(input_dir+"pro_articles_df.feather")
 
 
 def get_dictionary(input_dir):
@@ -111,7 +111,7 @@ def run_models(ks, dictionary, corpus, picked, output_dir):
         print()       
     return models
         
-        
+
 def main():
     args = parser.parse_args()
     

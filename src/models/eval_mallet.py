@@ -7,7 +7,8 @@ from gensim.corpora import Dictionary
 from gensim import corpora
 from tqdm import tqdm
 import csv
-import pickle 
+import pickle
+
 
 parser = argparse.ArgumentParser(description="Computes coherence metrics to evaluate mallet model.")
 parser.add_argument(
@@ -25,9 +26,7 @@ parser.add_argument(
 
 
 def get_df(input_dir):
-    articles_df = pd.read_csv(input_dir+"pro_articles_df.csv")
-    articles_df['tokens'] = articles_df['tokens'].apply(eval)
-    return articles_df
+    return pd.read_feather(input_dir+"pro_articles_df.feather")
 
 
 def get_dictionary(input_dir):
