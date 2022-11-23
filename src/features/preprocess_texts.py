@@ -43,14 +43,6 @@ def get_bigrams(df, output_dir):
                 df['tokens'].iloc[idx].append(tkn)
     df.to_feather(output_dir+"pro_articles_df.feather")
     return df
-    
-
-# def get_bow(df, output_dir):
-#     for text in tqdm(df['text']):
-#         tkn = preprocess_string(text)
-#     df['tokens'] = tkn
-#     df.to_csv(output_dir+"pro_articles_df.csv", index=False)
-#     return df
 
 
 def make_dictionary(df, output_dir):
