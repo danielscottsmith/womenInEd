@@ -54,7 +54,7 @@ def lookup_gender(df):
 def get_genders(df, genderized_names, data_dir):
     df['auth1_gender'] = df['auth1_name'].apply(lambda x: genderized_names[x][0])
     df['auth1_probwom'] = df['auth1_name'].apply(lambda x: genderized_names[x][1])
-    df.to_feather(data_dir+"pro_articles_df2.feather")
+    df.to_feather(data_dir+"pro_articles_df.feather")
     return df 
 
 
